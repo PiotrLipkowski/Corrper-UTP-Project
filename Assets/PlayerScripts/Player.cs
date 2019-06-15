@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
-using UnityStandardAssets.CrossPlatformInput;
-using UnityEngine.UI;
-
+using UnityEngine.Analytics;
+using System.Collections.Generic;
 public class Player : MonoBehaviour
 {
     public Rigidbody2D rb;
     float speed = 700f;
     public static bool lost = false;
+    private string playerOneLost = "Player 1 Lost";
    
 
     public void toRight()
@@ -44,6 +44,10 @@ public class Player : MonoBehaviour
         {
             Debug.Log("We lost");
             lost = true;
+            Analytics.CustomEvent("Player1_CrashCar", new Dictionary<string, object>
+            {
+                {"Who lose?", playerOneLost }
+            });
         }
 
         if(collision.tag == "Corpo1")

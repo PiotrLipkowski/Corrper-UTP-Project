@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Analytics;
+using System.Collections.Generic;
+
 
 public class Corpo4 : MonoBehaviour
 {
@@ -44,6 +47,15 @@ public class Corpo4 : MonoBehaviour
         if (corpo1.reachCorpo1 && corpo2.reachCorpo2 && corpo3.reachCorpo3 && reachCorpo4)
         {
             Debug.Log("You reach all");
+            string lvlName = "Level" + LevelScript.levelValue.ToString();
+
+            
+            Analytics.CustomEvent(lvlName, new Dictionary<string, object>
+            {
+                {"What level done?", LevelScript.levelValue }
+            });
+             
+
             LevelScript.levelValue += 1;
             Debug.Log(LevelScript.levelValue);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);

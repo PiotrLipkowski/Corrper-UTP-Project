@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Advertisements;
-
-
+using System.Collections.Generic;
+using UnityEngine.Analytics;
 
 public class LoseMenu : MonoBehaviour
 {
@@ -10,21 +10,36 @@ public class LoseMenu : MonoBehaviour
     public GameObject loseMenuUI;
     public Timer timer;
     public GameObject resumeButton;
+    private string lostLimitTime = "Time Limit";
+    private bool oneTimeCall = false;
 
 
     void Update()
     {
         
+
         if (Player.lost || Player2.lost || Player3.lost || Player4.lost || Timer.timeIsOver)
         {
             Pause();
         }
- 
+
+        
+
     }
 
 
     void Pause()
     {
+
+        if (!oneTimeCall && Timer.timeIsOver)
+        {
+                    Analytics.CustomEvent("TimeIsOver", new Dictionary<string, object>
+                {
+                    {"Lost reason", lostLimitTime }
+                });
+            
+            oneTimeCall = true;
+        }
 
         if (Application.internetReachability == NetworkReachability.NotReachable)
         {
@@ -47,6 +62,8 @@ public class LoseMenu : MonoBehaviour
 
         loseMenuUI.SetActive(true);
         Time.timeScale = 0f;
+
+        
     }
 
     public void WatchAndPlay()
